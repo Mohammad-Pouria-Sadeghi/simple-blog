@@ -1,13 +1,21 @@
-import React from 'react'
-import { Button } from './ui/button'
-import Link from 'next/link'
+"use client";
+
+import React from "react";
+import { Button } from "./ui/button";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const AuthButton = () => {
-  return (
-    <Button asChild variant={"outline"}>
-        <Link href="/api/auth/login">Login</Link>
-    </Button>
-  )
-}
+  const { data: session } = useSession();
 
-export default AuthButton
+  return session ? (
+    <Button variant="outline" onClick={() => signOut()}>
+      Logout
+    </Button>
+  ) : (
+    <Button variant="outline" onClick={() => signIn("google")}>
+      Login with Google
+    </Button>
+  );
+};
+
+export default AuthButton;
